@@ -1,0 +1,10 @@
+# status
+server {
+	listen 8080;
+	server_name lancache _;
+	access_log /data/logs/status-access.log;
+  	error_log /data/logs/status-error.log;
+	location = /nginx_status {
+		stub_status;
+	}
+}
