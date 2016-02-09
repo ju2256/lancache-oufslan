@@ -2,9 +2,9 @@
 
 server {
   listen 80;
-  server_name dist.blizzard.com llnw.blizzard.com blzddist1-a.akamaihd.net blzddist2-a.akamaihd.net dist.blizzard.com.edgesuite.net blizzard.vo.llnwd.net;
+  server_name dist.blizzard.com llnw.blizzard.com blzddist1-a.akamaihd.net blzddist2-a.akamaihd.net dist.blizzard.com.edgesuite.net blizzard.vo.llnwd.net deploy.akamaitechnologies.com;
 
-  access_log /data/logs/blizzard_access.log;
+  access_log /data/logs/blizzard-access.log;
   error_log /data/logs/blizzard-error.log;
 
   resolver 8.8.8.8 4.2.2.2;
