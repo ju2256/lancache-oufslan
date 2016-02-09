@@ -1,0 +1,22 @@
+# {{ ansible_managed }}
+
+server {
+  listen 80;
+  server_name l3cdn.riotgames.com;
+
+  access_log /data/logs/riot-access.log;
+  error_log /data/logs/riot-error.log;
+
+  resolver 8.8.8.8 4.2.2.2;
+
+  location / {
+    # Cache location
+    proxy_cache riot;
+    proxy_cache_key "$server_name$request_uri";
+    proxy_cache_valid 200 7d;
+
+    # Use proxy_cache method
+    include proxy/proxy-cache.conf;
+    include proxy/proxy-pass.conf;
+  }
+}
