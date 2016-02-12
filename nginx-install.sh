@@ -23,6 +23,9 @@ echo ' creation des repertoires sur \data'
 [ -d /data/cache/windows ] && echo "data Exists" || mkdir /data/cache/windows
 [ -d /data/cache/twitch ] && echo "data Exists" || mkdir /data/cache/twitch
 
+echo 'changement droits sur /data'
+chown -R www-data:www-data /data
+chmod -R 755 /data
 echo ' telechargement des sources nginx + modules'
 cd /data/src
 git clone https://github.com/openresty/sregex.git
