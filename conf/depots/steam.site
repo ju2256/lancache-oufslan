@@ -13,7 +13,7 @@ server {
     # Cache location
     proxy_cache steam;
     # erreurs upstream timed out
-    #proxy_read_timeout 300;
+    proxy_read_timeout 300;
     
     # Cache Settings
     proxy_cache_key "$server_name$uri";
