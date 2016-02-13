@@ -12,7 +12,9 @@ server {
   location /depot {
     # Cache location
     proxy_cache steam;
-
+    # erreurs upstream timed out
+    #proxy_read_timeout 300;
+    
     # Cache Settings
     proxy_cache_key "$server_name$uri";
     proxy_cache_valid 200 7d;
