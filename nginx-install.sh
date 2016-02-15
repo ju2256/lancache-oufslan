@@ -58,5 +58,10 @@ make
 echo 'make install'
 make install
 echo 'nginx installed in /etc/nginx'
+echo 'install lancache'
+rm /etc/nginx/conf/nginx.conf
+cp /data/src/lancache-oufslan/conf/nginx.conf /etc/nginx/conf/
+cp -r /data/src/lancache-oufslan/conf/proxy/ /etc/nginx/conf/
+cp -r /data/src/lancache-oufslan/conf/depots/ /etc/nginx/conf/
 
 exit 0
