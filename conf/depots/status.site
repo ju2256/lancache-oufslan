@@ -1,6 +1,6 @@
 # status
 server {
-	listen 8080;
+	listen 8081;
 	server_name lancache _;
 	access_log /data/logs/status-access.log;
   	error_log /data/logs/status-error.log;
