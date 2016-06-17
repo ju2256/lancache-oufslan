@@ -1,8 +1,8 @@
 # status
 server {
-	listen 8081;
+	listen 10.1.1.20:8081;
 	server_name lancache _;
-	access_log /data/logs/status-access.log;
+	access_log off;
   	error_log /data/logs/status-error.log;
 	location = /nginx_status {
 		stub_status;
