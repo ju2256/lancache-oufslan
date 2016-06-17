@@ -1,30 +1,24 @@
-# {{ ansible_managed }}
-
 server {
-  listen 80;
-  server_name origin-a.akamaihd.net akamai.cdn.ea.com lvlt.cdn.ea.com;
-
-  access_log /data/logs/origin-access.log;
-  error_log /data/logs/origin-error.log;
-
-  resolver 8.8.8.8 4.4.4.2;
-
-  location / {
-    # Request Slicing
-    # Supported in nginx 1.9.8
-    slice 1m;
-
-    # Cache Location
-    proxy_cache origin;
-
-    # Cache Settings
-    proxy_ignore_headers Expires Cache-Control;
-    proxy_cache_key   $uri$slice_range;
-    proxy_cache_valid 200 206 7d;
-    proxy_set_header  Range $slice_range;
-
-    # Use proxy_cache method
-    include proxy/proxy-cache.conf;
-    include proxy/proxy-pass.conf;
-  }
+	listen 10.1.1.20:80;
+	server_name origin-a.akamaihd.net akamai.cdn.ea.com lvlt.cdn.ea.com;
+	# log
+	access_log /data/logs/origin-access.log main buffer=128k flush=1m;
+	#access_log /data/logs/origin-keys.log keys_blizzard buffer=128k flush=1m;
+	error_log /data/logs/origin-error.log;
+	# dns
+	include proxy/resolver;
+	location / {
+		# Request Slicing supported in nginx 1.9.8
+		slice 1m;
+		# Cache Location
+		proxy_cache origin;
+		# Cache Settings
+		proxy_ignore_headers Expires Cache-Control;
+		proxy_cache_key   $uri$slice_range;
+		proxy_cache_valid 200 206 7d;
+		proxy_set_header  Range $slice_range;
+		# Use proxy_cache method
+		include proxy/proxy-cache.conf;
+		include proxy/proxy-pass.conf;
+	}
 }
