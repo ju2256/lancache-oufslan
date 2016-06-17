@@ -1,0 +1,2 @@
+resolver_timeout 5s;
+resolver 8.8.8.8;
