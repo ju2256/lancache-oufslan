@@ -1,6 +1,6 @@
 #!/bin/bash
 # script d'installation de nginx 1.9.10 pour lancache
-echo 'installation des dépendances'
+echo 'installation des dÃ©pendances'
 apt-get install build-essential libpcre3-dev zlib1g-dev git
 
 echo ' recuperation de la configuration lancache oufslan'
@@ -58,10 +58,5 @@ make
 echo 'make install'
 make install
 echo 'nginx installed in /etc/nginx'
-echo 'install lancache'
-rm /etc/nginx/conf/nginx.conf
-cp /data/src/lancache-oufslan/conf/nginx.conf /etc/nginx/conf/
-cp -r /data/src/lancache-oufslan/conf/proxy/ /etc/nginx/conf/
-cp -r /data/src/lancache-oufslan/conf/depots/ /etc/nginx/conf/
 
 exit 0
