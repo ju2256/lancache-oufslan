@@ -1,29 +1,25 @@
-# {{ ansible_managed }}
-
 server {
-  listen 80;
-  server_name dist.blizzard.com llnw.blizzard.com blzddist1-a.akamaihd.net blzddist2-a.akamaihd.net dist.blizzard.com.edgesuite.net blizzard.vo.llnwd.net;
-
-  access_log /data/logs/blizzard-access.log;
-  error_log /data/logs/blizzard-error.log;
-
-  resolver 8.8.8.8 4.2.2.2;
-
-  location / {
-    # Request Slicing
-    # Supported in nginx 1.9.8
-    slice 1m;
-
-    # Cache Location
-    proxy_cache blizzard;
-
-    # Cache Settings
-    proxy_cache_key   $uri$slice_range;
-    proxy_cache_valid 200 206 7d;
-    proxy_set_header  Range $slice_range;
-
-    # Use proxy_cache method
-    include proxy/proxy-cache.conf;
-    include proxy/proxy-pass.conf;
-  }
+	listen 10.1.1.20:80;
+	server_name dist.blizzard.com llnw.blizzard.com blzddist1-a.akamaihd.net blzddist2-a.akamaihd.net dist.blizzard.com.edgesuite.net blizzard.vo.llnwd.net;
+	# log
+	access_log /data/logs/blizzard-access.log main buffer=128k flush=1m;
+	#access_log /data/logs/blizzard-keys.log keys_blizzard buffer=128k flush=1m;
+	error_log /data/logs/blizzard-error.log;
+	# dns
+	include proxy/resolver;
+	location / {
+		# Request Slicing supported in nginx 1.9.8
+		slice 3m;
+		# Cache Location
+		proxy_cache blizzard;
+		# erreurs upstream timed out
+		proxy_read_timeout 300;
+		# Cache Settings
+		proxy_cache_key   $uri$slice_range;
+		proxy_cache_valid 200 206 7d;
+		proxy_set_header  Range $slice_range;
+		# Use proxy_cache method
+		include proxy/proxy-cache.conf;
+		include proxy/proxy-pass.conf;
+	}
 }
