@@ -1,39 +1,37 @@
-# {{ ansible_managed }}
-
 server {
-  listen 80;
-  server_name content1.steampowered.com content2.steampowered.com content3.steampowered.com content4.steampowered.com content5.steampowered.com content6.steampowered.com content7.steampowered.com content8.steampowered.com cs.steampowered.com clientconfig.akamai.steamstatic.com hsar.steampowered.com.edgesuite.net *.cs.steampowered.com *.hsar.steampowered.com.edgesuite.net *.akamai.steamstatic.com;
-
-  access_log /data/logs/steam-access.log;
-  error_log /data/logs/steam-error.log;
-
-  resolver 8.8.8.8 4.2.2.2;
-
-  location /depot {
-    # Cache location
-    proxy_cache steam;
-    # erreurs upstream timed out
-    proxy_read_timeout 300;
-    
-    # Cache Settings
-    proxy_cache_key "$server_name$uri";
-    proxy_cache_valid 200 7d;
-
-    # Use proxy_cache method
-    include proxy/proxy-cache.conf;
-    include proxy/proxy-pass.conf;
-
-    # Ignore upstream Expires header choose use our own
-    proxy_ignore_headers Expires;
-  }
-
-  location / {
-    # Cache location
-    proxy_cache other;
-    proxy_cache_key "$server_name$request_uri";
-
-    # Use proxy_cache method
-    include proxy/proxy-cache.conf;
-    include proxy/proxy-pass.conf;
-  }
+	listen 10.1.1.20:80;
+	server_name content1.steampowered.com content2.steampowered.com content3.steampowered.com content4.steampowered.com content5.steampowered.com content6.steampowered.com content7.steampowered.com content8.steampowered.com cs.steampowered.com clientconfig.akamai.steamstatic.com hsar.steampowered.com.edgesuite.net *.cs.steampowered.com *.hsar.steampowered.com.edgesuite.net *.akamai.steamstatic.com *.steamcontent.com;
+	# log
+	access_log /data/logs/steam-access.log main buffer=128k flush=1m;
+	#access_log /data/logs/steam-keys.log keys_blizzard buffer=128k flush=1m;
+	error_log /data/logs/steam-error.log;
+	# dns
+	include proxy/resolver;
+	location /depot {
+		# Cache location
+		proxy_cache steam;
+		# erreurs upstream timed out
+		proxy_read_timeout 300;
+		# Cache Settings
+		proxy_cache_key "$server_name$uri";
+		proxy_cache_valid 200 7d;
+		# Use proxy_cache method
+		include proxy/proxy-cache.conf;
+		include proxy/proxy-pass.conf;
+		# Ignore upstream Expires header choose use our own
+		proxy_ignore_headers Expires;
+	}
+	location /serverlist/ {
+		proxy_store /data/cache/steam/steam$uri/servers.txt;
+		proxy_store_access user:rw group:rw all:r;
+		include proxy/proxy-pass.conf;
+	}
+	location / {
+		# Cache location
+		proxy_cache other;
+		proxy_cache_key "$server_name$request_uri";
+		# Use proxy_cache method
+		include proxy/proxy-cache.conf;
+		include proxy/proxy-pass.conf;
+	}
 }
