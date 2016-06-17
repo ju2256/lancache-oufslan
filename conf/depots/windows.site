@@ -1,29 +1,25 @@
-# {{ ansible_managed }}
-
 server {
-  listen 80;
-  server_name download.windowsupdate.com;
-
-  access_log /data/logs/windows-access.log;
-  error_log /data/logs/windows-error.log;
-
-  resolver 8.8.8.8 4.2.2.2;
-
-  location / {
-    # Request Slicing
-    # Supported in nginx 1.9.8
-    slice 1m;
-
-    # Cache Location
-    proxy_cache windows;
-
-    # Cache Settings
-    proxy_cache_key   $uri$slice_range;
-    proxy_cache_valid 200 206 7d;
-    proxy_set_header  Range $slice_range;
-
-    # Use proxy_cache method
-    include proxy/proxy-cache.conf;
-    include proxy/proxy-pass.conf;
-  }
+	listen 10.1.1.20:80;
+	server_name download.windowsupdate.com;
+	# pb ds.download.windowsupdate.com
+	# log
+	access_log /data/logs/microsoft-access.log main buffer=128k flush=1m;
+	error_log /data/logs/microsoft-error.log;
+	# dns
+	include proxy/resolver;
+	location / {
+		# Request Slicing Supported in nginx 1.9.8
+		slice 1m;
+		# Cache Location
+		proxy_cache windows;
+		# erreurs upstream timed out
+		proxy_read_timeout 300;
+		# Cache Settings
+		proxy_cache_key   $uri$slice_range;
+		proxy_cache_valid 200 206 7d;
+		proxy_set_header  Range $slice_range;
+		# Use proxy_cache method
+		include proxy/proxy-cache.conf;
+		include proxy/proxy-pass.conf;
+	}
 }
