@@ -1,7 +1,7 @@
 #!/bin/bash
 # script d'installation de nginx 1.9.10 pour lancache
 echo 'installation des dÃ©pendances'
-apt-get install build-essential libpcre3-dev zlib1g-dev git
+apt-get install build-essential libpcre3-dev zlib1g-dev git libssl-dev
 
 echo ' recuperation de la configuration lancache oufslan'
 [ -d /etc/nginx ] && echo "data Exists" || mkdir /etc/nginx
