@@ -49,6 +49,7 @@ echo 'configure with custom options'
 --with-http_sub_module \
 --with-http_slice_module \
 --with-http_stub_status_module \
+--with-http_ssl_module \
 --add-module=../replace-filter-nginx-module \
 --with-ld-opt="-Wl,-rpath,/usr/local/lib"
 
