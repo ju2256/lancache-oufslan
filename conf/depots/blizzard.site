@@ -1,5 +1,5 @@
 server {
-	listen 10.1.1.20:80;
+	listen 80;
 	server_name dist.blizzard.com llnw.blizzard.com blzddist1-a.akamaihd.net blzddist2-a.akamaihd.net dist.blizzard.com.edgesuite.net blizzard.vo.llnwd.net;
 	# log
 	access_log /data/logs/blizzard-access.log main buffer=128k flush=1m;
@@ -15,9 +15,18 @@ server {
 		# erreurs upstream timed out
 		proxy_read_timeout 300;
 		# Cache Settings
-		proxy_cache_key   $uri$slice_range;
-		proxy_cache_valid 200 206 7d;
-		proxy_set_header  Range $slice_range;
+		
+		# old settings
+		#proxy_cache_key   $uri$slice_range;
+		#proxy_cache_valid 200 206 7d;
+		#proxy_set_header  Range $slice_range;
+		
+		# test settings
+		proxy_set_header Range $http_range;
+		proxy_set_header If-Range $http_if_range;
+		proxy_cache_key "$server_name$request_uri $http_range";
+		proxy_cache_valid 206 90d;
+		
 		# Use proxy_cache method
 		include proxy/proxy-cache.conf;
 		include proxy/proxy-pass.conf;
